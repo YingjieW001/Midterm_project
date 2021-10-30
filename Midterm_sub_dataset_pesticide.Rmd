@@ -1,0 +1,45 @@
+---
+title: "midterm_project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+strawberries = read.csv("Strawberries.csv")
+head(strawberries)
+```
+```{r}
+pesticides = read.csv("Pesticides.csv")
+head(pesticides)
+```
+```{r}
+chemicals = read.csv("chemicals_herbicides_fungicides_other.csv")
+head(chemicals)
+```
+```{r}
+strawberries["Domain"]
+```
+```{r}
+# sub-datast that contains data that uses pesticide (insecticide).
+strawberries_insec = strawberries[which(strawberries$Domain=="CHEMICAL, INSECTICIDE"),]
+head(strawberries_insec)
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
