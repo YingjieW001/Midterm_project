@@ -1,6 +1,8 @@
 ---
 title: "midterm_project"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +22,7 @@ chemicals = read.csv("chemicals_herbicides_fungicides_other.csv")
 head(chemicals)
 ```
 ```{r}
-strawberries["Domain"]
+head(strawberries["Domain"])
 ```
 ```{r}
 # sub-datast that contains data that uses pesticide (insecticide).
