@@ -1,0 +1,99 @@
+---
+title: "Percentage Change over Time"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("sub_dataset_strawberries.R")
+```
+
+```{r}
+total = dim(ST1)[1]
+total
+```
+```{r}
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+data_2019 <- ST1[grep(pattern = "2019",ST1[,1]),]
+head(data_2019)
+data_2018 <- ST1[grep(pattern = "2018",ST1[,1]),]
+head(data_2018)
+data_2016 <- ST1[grep(pattern = "2016",ST1[,1]),]
+head(data_2016)
+```
+
+```{r}
+n_2019 = dim(data_2019)[1]
+n_2018 = dim(data_2018)[1]
+n_2016 = dim(data_2016)[1]
+c(n_2019, n_2018, n_2016)
+```
+
+```{r}
+org_2019 <- data_2019[grep(pattern = "ORGANIC STATUS",data_2019[,3]),]
+n_org_2019 = dim(org_2019)[1]
+org_2018 <- data_2018[grep(pattern = "ORGANIC STATUS",data_2018[,3]),]
+n_org_2018 = dim(org_2018)[1]
+org_2016 <- data_2016[grep(pattern = "ORGANIC STATUS",data_2016[,3]),]
+n_org_2016 = dim(org_2016)[1]
+c(n_org_2019,n_org_2018, n_org_2016)
+```
+
+```{r}
+pe_2019 <- data_2019[grep(pattern = "CHEMICAL, INSECTICIDE",data_2019[,3]),]
+n_pe_2019 = dim(pe_2019)[1]
+pe_2018 <- data_2018[grep(pattern = "CHEMICAL, INSECTICIDE",data_2018[,3]),]
+n_pe_2018 = dim(pe_2018)[1]
+pe_2016 <- data_2016[grep(pattern = "CHEMICAL, INSECTICIDE",data_2016[,3]),]
+n_pe_2016 = dim(pe_2016)[1]
+c(n_pe_2019,n_pe_2018, n_pe_2016)
+```
+
+```{r}
+perc_org_2019 = n_org_2019/n_2019
+perc_org_2018 = n_org_2018/n_2018
+perc_org_2016 = n_org_2016/n_2016
+
+perc_pe_2019 = n_pe_2019/n_2019
+perc_pe_2018 = n_pe_2018/n_2018
+perc_pe_2016 = n_pe_2016/n_2016
+
+c(perc_org_2019, perc_org_2018, perc_org_2016, perc_pe_2019, perc_pe_2018, perc_pe_2016)
+```
+
+```{r}
+perc_org = c(perc_org_2016, perc_org_2018, perc_org_2019)
+perc_pe = c(perc_pe_2016, perc_pe_2018, perc_pe_2019)
+
+perc_data <- data.frame(
+  year = rep(c("2016", "2018", "2019"), times=2),
+  type = rep(c("Organic", "Insecticide"), each=3),
+  percentage = c(perc_org, perc_pe)
+)
+```
+
+```{r}
+perc_data$year
+perc_data$percentage
+```
+
+
+```{r}
+library(ggplot2)
+
+ggplot(data = perc_data, mapping = aes(x = year, y = percentage, colour = type)) +
+  geom_point() +
+  geom_line(aes(group=type)) +
+  ggtitle("Percentage Change over Time")
+```
+
+
