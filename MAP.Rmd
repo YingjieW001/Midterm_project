@@ -8,13 +8,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel", 
-                   "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
-install.packages("sf")
-install.packages("rgeos")
-install.packages("Rcpp")
-install.packages("maps")
-install.packages("usmap")
+#install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel", 
+#                   "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+#install.packages("sf")
+#install.packages("rgeos")
+#install.packages("Rcpp")
+#install.packages("maps")
+#install.packages("usmap")
 library("ggplot2")
 theme_set(theme_bw())
 library(sf)
@@ -40,6 +40,13 @@ data_NY <- ST_to[grep(pattern = "NEW YORK",ST_to[,2]),]
 data_NC <- ST_to[grep(pattern = "NORTH CAROLINA",ST_to[,2]),]
 data_OR <- ST_to[grep(pattern = "OREGON",ST_to[,2]),]
 data_WA <- ST_to[grep(pattern = "WASHINGTON",ST_to[,2]),]
+n_data_CA<-dim(data_CA)[1]
+n_data_FL<-dim(data_FL)[1]
+n_data_NY<-dim(data_NY)[1]
+n_data_NC<-dim(data_NC)[1]
+n_data_OR<-dim(data_OR)[1]
+n_data_WA<-dim(data_WA)[1]
+c(n_data_CA,n_data_FL,n_data_NY,n_data_NC,n_data_OR,n_data_WA)
 ```
 
 ```{r}
@@ -74,28 +81,52 @@ c(n_data_CA_OR,n_data_FL_OR,n_data_NY_OR,n_data_NC_OR,n_data_OR_OR,n_data_WA_OR)
 ```
 
 ```{r}
-ra_pe_CA=n_data_CA_OR/n_data_CA_PE
-ra_pe_FL=n_data_FL_OR/n_data_FL_PE
-ra_pe_NY=n_data_NY_OR/n_data_NY_PE
-ra_pe_NC=n_data_NC_OR/n_data_NC_PE
-ra_pe_OR=n_data_OR_OR/n_data_OR_PE
-ra_pe_WA=n_data_WA_OR/n_data_WA_PE
-ra_st<-c(ra_pe_CA,ra_pe_FL,ra_pe_NY,ra_pe_NC,ra_pe_OR,ra_pe_WA)
+ra_or_CA=n_data_CA_OR/n_data_CA
+ra_or_FL=n_data_FL_OR/n_data_FL
+ra_or_NY=n_data_NY_OR/n_data_NY
+ra_or_NC=n_data_NC_OR/n_data_NC
+ra_or_OR=n_data_OR_OR/n_data_OR
+ra_or_WA=n_data_WA_OR/n_data_WA
+ra_or<-c(ra_or_CA,ra_or_FL,ra_or_NY,ra_or_NC,ra_or_OR,ra_or_WA)
 ```
 
 ```{r}
-ra_data<- data.frame(
+ra_pe_CA=n_data_CA_PE/n_data_CA
+ra_pe_FL=n_data_FL_PE/n_data_FL
+ra_pe_NY=n_data_NY_PE/n_data_NY
+ra_pe_NC=n_data_NC_PE/n_data_NC
+ra_pe_OR=n_data_OR_PE/n_data_OR
+ra_pe_WA=n_data_WA_PE/n_data_WA
+ra_pe<-c(ra_pe_CA,ra_pe_FL,ra_pe_NY,ra_pe_NC,ra_pe_OR,ra_pe_WA)
+```
+
+```{r}
+ra_data_or<- data.frame(
   state=c("CA", "FL", "NY", "NC", "OR", "WA"),
-  Ratio=c(ra_st)
+  Ratio=c(ra_or)
+)
+```
+
+```{r}
+ra_data_pe<- data.frame(
+  state=c("CA", "FL", "NY", "NC", "OR", "WA"),
+  Ratio=c(ra_pe)
 )
 ```
 
 ```{r}
 library(usmap)
-plot_usmap(labels=TRUE,data=ra_data, values="Ratio",color="red")+
+plot_usmap(labels=TRUE,data=ra_data_or, values="Ratio",color="red")+
   scale_fill_continuous(
-    low = "green", high = "red", name = "Ratio of Pesticide Use", label = scales::comma
+    low = "green", high = "red", name = "Ratio of Organic Type", label = scales::comma
 ) + theme(legend.position = "right")
 
+```
+
+```{r}
+plot_usmap(labels=TRUE,data=ra_data_pe, values="Ratio",color="red")+
+  scale_fill_continuous(
+    low = "green", high = "red", name = "Ratio of Insectivide Use", label = scales::comma
+) + theme(legend.position = "right")
 ```
 

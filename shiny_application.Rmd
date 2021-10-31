@@ -35,7 +35,10 @@ ui <- fluidPage(
 
       # Output: 
 
-      plotOutput(outputId = "view")
+      plotOutput(outputId = "line_view"),
+      
+      plotOutput(outputId = "map_view")
+
 
     )
   )
@@ -47,8 +50,8 @@ server <- function(input, output) {
 
   
   source(knitr::purl("Percentage_change_over_time.Rmd", quiet=TRUE))
-  
-  output$view <- renderPlot({
+
+  output$line_view <- renderPlot({
     library(ggplot2)
     
     if (input$type=="Organic"){
@@ -64,6 +67,28 @@ server <- function(input, output) {
       geom_line(aes(group=1)) +
       ggtitle("Insecticide Type Percentage Change over Time") +
       theme(text = element_text(size=20))
+    }
+  })
+  
+  output$map_view <- renderPlot({
+    
+    source(knitr::purl("MAP.Rmd", quiet=TRUE))
+
+    if (input$type=="Organic"){
+      plot_usmap(labels=TRUE,data=ra_data_or, values="Ratio",color="red")+
+        scale_fill_continuous(
+          low = "green", high = "red", name = "Percentage of Organic Type", label = scales::comma
+      ) + theme(legend.position = "right") + 
+        ggtitle("Insecticide Type Percentage by Different States") +
+        theme(text = element_text(size=20))
+    }
+    else{
+      plot_usmap(labels=TRUE,data=ra_data_pe, values="Ratio",color="red")+
+        scale_fill_continuous(
+          low = "green", high = "red", name = "Percentage of Insectivide Use", label = scales::comma
+      ) + theme(legend.position = "right") +
+        ggtitle("Organic Type Percentage by Different States") +
+        theme(text = element_text(size=20))
     }
   })
 
