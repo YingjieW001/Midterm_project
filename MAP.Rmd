@@ -1,0 +1,93 @@
+---
+title: "Map"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages(c("cowplot", "googleway", "ggplot2", "ggrepel", 
+                   "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata"))
+install.packages("sf")
+install.packages("rgeos")
+install.packages("Rcpp")
+install.packages("maps")
+install.packages("usmap")
+library("ggplot2")
+theme_set(theme_bw())
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library("maps")
+```
+
+```{r}
+source("sub_dataset_strawberries.R")
+```
+
+```{r}
+ST_state<-ST_to[,2]
+levels(factor(ST_state))
+states<- c("CALIFORNIA","FLORIDA","NEW YORK","NORTH CAROLINA","OREGON","WASHINGTON")
+```
+
+```{r}
+data_CA <- ST_to[grep(pattern = "CALIFORNIA",ST_to[,2]),]
+data_FL <- ST_to[grep(pattern = "FLORIDA",ST_to[,2]),]
+data_NY <- ST_to[grep(pattern = "NEW YORK",ST_to[,2]),]
+data_NC <- ST_to[grep(pattern = "NORTH CAROLINA",ST_to[,2]),]
+data_OR <- ST_to[grep(pattern = "OREGON",ST_to[,2]),]
+data_WA <- ST_to[grep(pattern = "WASHINGTON",ST_to[,2]),]
+n_data_CA<-dim(data_CA)[1]
+n_data_FL<-dim(data_FL)[1]
+n_data_NY<-dim(data_NY)[1]
+n_data_NC<-dim(data_NC)[1]
+n_data_OR<-dim(data_OR)[1]
+n_data_WA<-dim(data_WA)[1]
+c(n_data_CA,n_data_FL,n_data_NY,n_data_NC,n_data_OR,n_data_WA)
+```
+
+```{r}
+data_CA_PE<- data_CA[grep(pattern = "CHEMICAL, INSECTICIDE",data_CA[,3]),]
+data_FL_PE<- data_FL[grep(pattern = "CHEMICAL, INSECTICIDE",data_FL[,3]),]
+data_NY_PE<- data_NY[grep(pattern = "CHEMICAL, INSECTICIDE",data_NY[,3]),]
+data_NC_PE<- data_NC[grep(pattern = "CHEMICAL, INSECTICIDE",data_NC[,3]),]
+data_OR_PE<- data_OR[grep(pattern = "CHEMICAL, INSECTICIDE",data_OR[,3]),]
+data_WA_PE<- data_WA[grep(pattern = "CHEMICAL, INSECTICIDE",data_WA[,3]),]
+n_data_CA_PE<-dim(data_CA_PE)[1]
+n_data_FL_PE<-dim(data_FL_PE)[1]
+n_data_NY_PE<-dim(data_NY_PE)[1]
+n_data_NC_PE<-dim(data_NC_PE)[1]
+n_data_OR_PE<-dim(data_OR_PE)[1]
+n_data_WA_PE<-dim(data_WA_PE)[1]
+c(n_data_CA_PE,n_data_FL_PE,n_data_NY_PE,n_data_NC_PE,n_data_OR_PE,n_data_WA_PE)
+```
+
+```{r}
+ra_pe_CA=n_data_CA_PE/n_data_CA
+ra_pe_FL=n_data_FL_PE/n_data_FL
+ra_pe_NY=n_data_NY_PE/n_data_NY
+ra_pe_NC=n_data_NC_PE/n_data_NC
+ra_pe_OR=n_data_OR_PE/n_data_OR
+ra_pe_WA=n_data_WA_PE/n_data_WA
+ra_st<-c(ra_pe_CA,ra_pe_FL,ra_pe_NY,ra_pe_NC,ra_pe_OR,ra_pe_WA)
+```
+
+```{r}
+ra_data<- data.frame(
+  state=c("CA", "FL", "NY", "NC", "OR", "WA"),
+  Ratio=c(ra_st)
+)
+```
+
+```{r}
+library(usmap)
+plot_usmap(labels=TRUE,data=ra_data, values="Ratio",color="red")+
+  scale_fill_continuous(
+    low = "green", high = "red", name = "Ratio of Pesticide Use", label = scales::comma
+) + theme(legend.position = "right")
+
+```
+
