@@ -1,0 +1,77 @@
+---
+title: "Shiny Application"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(shiny)
+```
+
+```{r}
+ui <- fluidPage(
+
+  # App title 
+  titlePanel("Explore Strawberry Dataset"),
+
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+
+      # Input: Slider for the number of bins ----
+      selectInput(inputId = "type",
+                  label = "Choose a type:",
+                  choices = c("Organic", "Insecticide"))
+
+    ),
+
+    # Main panel for displaying outputs ----
+    mainPanel(
+
+      # Output: 
+
+      plotOutput(outputId = "view")
+
+    )
+  )
+)
+```
+
+```{r}
+server <- function(input, output) {
+
+  
+  source(knitr::purl("Percentage_change_over_time.Rmd", quiet=TRUE))
+  
+  output$view <- renderPlot({
+    library(ggplot2)
+    
+    if (input$type=="Organic"){
+      ggplot(data = perc_data_org, mapping = aes(x = year, y = percentage)) +
+      geom_point() +
+      geom_line(aes(group=1)) +
+      ggtitle("Organic Type Percentage Change over Time") +
+      theme(text = element_text(size=20))
+    }
+    else{
+      ggplot(data = perc_data_pe, mapping = aes(x = year, y = percentage)) +
+      geom_point() +
+      geom_line(aes(group=1)) +
+      ggtitle("Insecticide Type Percentage Change over Time") +
+      theme(text = element_text(size=20))
+    }
+  })
+
+}
+```
+
+```{r}
+shinyApp(ui = ui, server = server)
+```
+
+
