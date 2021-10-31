@@ -40,13 +40,6 @@ data_NY <- ST_to[grep(pattern = "NEW YORK",ST_to[,2]),]
 data_NC <- ST_to[grep(pattern = "NORTH CAROLINA",ST_to[,2]),]
 data_OR <- ST_to[grep(pattern = "OREGON",ST_to[,2]),]
 data_WA <- ST_to[grep(pattern = "WASHINGTON",ST_to[,2]),]
-n_data_CA<-dim(data_CA)[1]
-n_data_FL<-dim(data_FL)[1]
-n_data_NY<-dim(data_NY)[1]
-n_data_NC<-dim(data_NC)[1]
-n_data_OR<-dim(data_OR)[1]
-n_data_WA<-dim(data_WA)[1]
-c(n_data_CA,n_data_FL,n_data_NY,n_data_NC,n_data_OR,n_data_WA)
 ```
 
 ```{r}
@@ -64,14 +57,29 @@ n_data_OR_PE<-dim(data_OR_PE)[1]
 n_data_WA_PE<-dim(data_WA_PE)[1]
 c(n_data_CA_PE,n_data_FL_PE,n_data_NY_PE,n_data_NC_PE,n_data_OR_PE,n_data_WA_PE)
 ```
+```{r}
+data_CA_OR<- data_CA[grep(pattern = "ORGANIC STATUS",data_CA[,3]),]
+data_FL_OR<- data_FL[grep(pattern = "ORGANIC STATUS",data_FL[,3]),]
+data_NY_OR<- data_NY[grep(pattern = "ORGANIC STATUS",data_NY[,3]),]
+data_NC_OR<- data_NC[grep(pattern = "ORGANIC STATUS",data_NC[,3]),]
+data_OR_OR<- data_OR[grep(pattern = "ORGANIC STATUS",data_OR[,3]),]
+data_WA_OR<- data_WA[grep(pattern = "ORGANIC STATUS",data_WA[,3]),]
+n_data_CA_OR<-dim(data_CA_OR)[1]
+n_data_FL_OR<-dim(data_FL_OR)[1]
+n_data_NY_OR<-dim(data_NY_OR)[1]
+n_data_NC_OR<-dim(data_NC_OR)[1]
+n_data_OR_OR<-dim(data_OR_OR)[1]
+n_data_WA_OR<-dim(data_WA_OR)[1]
+c(n_data_CA_OR,n_data_FL_OR,n_data_NY_OR,n_data_NC_OR,n_data_OR_OR,n_data_WA_OR)
+```
 
 ```{r}
-ra_pe_CA=n_data_CA_PE/n_data_CA
-ra_pe_FL=n_data_FL_PE/n_data_FL
-ra_pe_NY=n_data_NY_PE/n_data_NY
-ra_pe_NC=n_data_NC_PE/n_data_NC
-ra_pe_OR=n_data_OR_PE/n_data_OR
-ra_pe_WA=n_data_WA_PE/n_data_WA
+ra_pe_CA=n_data_CA_OR/n_data_CA_PE
+ra_pe_FL=n_data_FL_OR/n_data_FL_PE
+ra_pe_NY=n_data_NY_OR/n_data_NY_PE
+ra_pe_NC=n_data_NC_OR/n_data_NC_PE
+ra_pe_OR=n_data_OR_OR/n_data_OR_PE
+ra_pe_WA=n_data_WA_OR/n_data_WA_PE
 ra_st<-c(ra_pe_CA,ra_pe_FL,ra_pe_NY,ra_pe_NC,ra_pe_OR,ra_pe_WA)
 ```
 
