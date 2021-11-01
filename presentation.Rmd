@@ -1,6 +1,6 @@
 ---
 title: "Explore Strawberries Dataset"
-author: Jiayue Lu, Shenjin Nian, Yingjie Wang
+author: Jiayue Lu, Jinnian Shen, Yingjie Wang
 date: Nov 01, 2021
 output: 
   revealjs::revealjs_presentation:
