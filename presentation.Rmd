@@ -1,0 +1,98 @@
+---
+title: "Explore Strawberries Dataset"
+author: Jiayue Lu, Shenjin Nian, Yingjie Wang
+date: Nov 01, 2021
+output: 
+  revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: 
+      - search
+      - zoom
+      - notes
+      - chalkboard
+      - menu
+    reveal_options:
+      chalkboard:
+        theme: chalkboard
+        toggleNotesButton: true
+      menu:
+        numbers: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(knitr.duplicate.label = "allow")
+```
+
+## Strawberries Dataset Overview
+
+- The strawberries dataset used in this project includes strawberry market data. Each sample consists of year information, state information, organic/chemical status and output values.
+
+- In our study, the proposed question is: Whether the organic/insecticide status varies across states and year?
+
+## Clean up the dataset
+
+The original dataset has columns containing information that we are not interest in, and there are only few sample in year 2015 and 2017, we cleaned up the dataset as follows:
+
+- Collected data that only contains year, state, chemical type and chemical information
+- Extract sub-datasets that contain samples from year 2016, 2018 and 2019 respectively.
+
+```{r}
+source("sub_dataset_strawberries.R")
+head(ST_to)
+```
+
+
+## Organic Type Percentage Change by Year
+
+```{r, include=FALSE}
+source(knitr::purl("Percentage_change_over_time.Rmd"))
+```
+
+```{r, echo=FALSE}
+ggplot(data = perc_data_org, mapping = aes(x = year, y = percentage)) +
+      geom_point() +
+      geom_line(aes(group=1)) +
+      ggtitle("Organic Type Percentage Change over Time") +
+      theme(text = element_text(size=20))
+```
+
+## Insecticide Use Percentage Change by Year
+
+```{r, echo=FALSE}
+ggplot(data = perc_data_pe, mapping = aes(x = year, y = percentage)) +
+      geom_point() +
+      geom_line(aes(group=1)) +
+      ggtitle("Insecticide Type Percentage Change over Time") +
+      theme(text = element_text(size=20))
+```
+
+
+## Organic Type Percentage by State
+
+```{r, include=FALSE}
+source(knitr::purl("MAP.Rmd"))
+```
+
+```{r, echo=FALSE}
+plot_usmap(labels=TRUE,data=ra_data_or, values="Ratio",color="red")+
+  scale_fill_continuous(
+    low = "green", high = "red", name = "Percentage of Organic Type", label = scales::comma
+) + theme(legend.position = "right")
+```
+
+## Insecticide Use Percentage by State
+
+```{r, echo=FALSE}
+plot_usmap(labels=TRUE,data=ra_data_pe, values="Ratio",color="red")+
+  scale_fill_continuous(
+    low = "green", high = "red", name = "Percentage of Insectivide Use", label = scales::comma
+) + theme(legend.position = "right")
+```
+
+## Conclusion
+
+- Year: our analysis does notice organic/insecticide status variation across year, but no clear monotonic trend is found.
+- State: our map plot shows that the organic/insecticide status has clear variation across states
+
+## Thank you!

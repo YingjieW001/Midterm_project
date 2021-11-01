@@ -118,7 +118,7 @@ ra_data_pe<- data.frame(
 library(usmap)
 plot_usmap(labels=TRUE,data=ra_data_or, values="Ratio",color="red")+
   scale_fill_continuous(
-    low = "green", high = "red", name = "Ratio of Organic Type", label = scales::comma
+    low = "green", high = "red", name = "Percentage of Organic Type", label = scales::comma
 ) + theme(legend.position = "right")
 
 ```
@@ -126,7 +126,7 @@ plot_usmap(labels=TRUE,data=ra_data_or, values="Ratio",color="red")+
 ```{r}
 plot_usmap(labels=TRUE,data=ra_data_pe, values="Ratio",color="red")+
   scale_fill_continuous(
-    low = "green", high = "red", name = "Ratio of Insectivide Use", label = scales::comma
+    low = "green", high = "red", name = "Percentage of Insectivide Use", label = scales::comma
 ) + theme(legend.position = "right")
 ```
 
